@@ -1,0 +1,4 @@
+{
+  "about": "Topics hidden from the site. Chef videos whose titles contain any of these words are dropped by the chefs agent and never shown. Edit this list to change what is hidden.",
+  "terms": ["bengali", "bangali", "bangla", "kolkata", "calcutta", "durga puja", "shukto", "posto", "mishti doi", "cholar dal", "begun bhaja", "luchi", "chanar dalna", "dhokar dalna", "bhapa", "jhalmuri", "sandesh", "rosogolla", "kathi roll"]
+}

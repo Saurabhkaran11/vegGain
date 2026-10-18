@@ -1,0 +1,30 @@
+{
+  "name": "veggain8",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "agents": "node agents/run.mjs",
+    "agents:force": "node agents/run.mjs --force",
+    "dev": "node agents/run.mjs && next dev -p 3456",
+    "prebuild": "node agents/run.mjs",
+    "build": "next build",
+    "start": "next start -p 3456",
+    "app": "(lsof -ti tcp:3456 -sTCP:LISTEN | xargs kill -9 2>/dev/null; true) && npm run build && next start -p 3456",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

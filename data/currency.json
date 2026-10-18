@@ -1,0 +1,12 @@
+{
+ "updatedAt": "2026-10-18T02:51:13.171Z",
+ "base": "USD",
+ "rates": {
+  "INR": 95.075677,
+  "EUR": 0.889614,
+  "GBP": 0.750845
+ },
+ "providerUpdated": "Sun, 18 Oct 2026 00:02:31 +0000",
+ "provider": "ExchangeRate-API (open access)",
+ "attributionUrl": "https://www.exchangerate-api.com"
+}

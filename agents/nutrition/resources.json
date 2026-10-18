@@ -1,0 +1,3 @@
+[
+ {"name":"USDA FoodData Central API","url":"https://fdc.nal.usda.gov/api-guide","type":"REST API","cost":"Free; DEMO_KEY or a free personal key (1,000 requests/hour)","note":"Foundation and SR Legacy datasets, public domain (CC0)."}
+]

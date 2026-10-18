@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# per-agent secrets
+agents/*/.env
+
+# local photo working files
+.photo-work/

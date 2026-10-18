@@ -1,0 +1,5 @@
+[
+ {"name":"Wikimedia Commons API","url":"https://www.mediawiki.org/wiki/API:Imageinfo","type":"REST API","cost":"Free, no key","note":"Searches and verifies Creative Commons food photos."},
+ {"name":"Openverse API","url":"https://api.openverse.org/v1/","type":"REST API","cost":"Free, no key","note":"Used once to source 3 photos from Flickr (golden milk, fruit cup, tempeh)."},
+ {"name":"sharp","url":"https://sharp.pixelplumbing.com/","type":"npm library","cost":"Free (Apache-2.0)","note":"Crops new photos to 800×600 WebP."}
+]
