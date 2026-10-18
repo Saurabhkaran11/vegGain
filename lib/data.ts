@@ -13,8 +13,8 @@ export type Video = { id: string; title: string; url: string; thumb: string; pub
 type ChefFeed = { ok?: boolean; avatar?: string; videos?: Video[]; source?: string; error?: string };
 
 export const CHEFS = chefsList as Chef[];
-const feeds = ((chefsData as { chefs?: Record<string, ChefFeed> }).chefs ?? {}) as Record<string, ChefFeed>;
-export const chefsUpdatedAt = (chefsData as { updatedAt?: string }).updatedAt;
+const feeds = ((chefsData as unknown as { chefs?: Record<string, ChefFeed> }).chefs ?? {}) as Record<string, ChefFeed>;
+export const chefsUpdatedAt = (chefsData as unknown as { updatedAt?: string }).updatedAt;
 export const chefById = (id: string) => CHEFS.find((c) => c.id === id);
 
 // Topics removed from the site (lib/hidden-topics.json). Applied here too, so videos saved
@@ -43,13 +43,15 @@ export const searchChefVideo = (c: Chef, m: Meal) =>
   "https://www.youtube.com/results?search_query=" + encodeURIComponent(`${c.name.replace(/\(.*\)/, "")} ${m.name.replace(/\s*\+.*$/, "").replace(/\(.*?\)/g, "")}`);
 
 export type FoodRow = { name: string; usdaName: string; url: string; per100g: Record<string, number | null> };
-export const nutrition = nutritionData as { updatedAt?: string; total?: number; foods?: FoodRow[] };
-export const currency = currencyData as { updatedAt?: string; base?: string; rates?: Record<string, number>; providerUpdated?: string; attributionUrl?: string };
+export const nutrition = nutritionData as unknown as { updatedAt?: string; total?: number; foods?: FoodRow[] };
+export const currency = currencyData as unknown as { updatedAt?: string; base?: string; rates?: Record<string, number>; providerUpdated?: string; attributionUrl?: string };
 export const usdToInr = () => currency.rates?.INR;
 
-export type AgentStatus = { ok?: boolean; lastRun?: string; lastSuccess?: string; summary?: string; error?: string; warnings?: string[]; durationMs?: number; envFile?: string; skipped?: boolean;
+export type AgentStatus = { ok?: boolean; lastRun?: string; lastSuccess?: string; summary?: string; error?: string; warnings?: string[]; durationMs?: number; envFile?: string | null; skipped?: boolean;
   resources?: { name: string; url: string; type: string; cost: string; note?: string }[] };
-export const agentStatus = statusData as { lastRun?: string; agents?: Record<string, AgentStatus> };
+// These JSON files are written by the data agents at build time, so their exact shape can vary (e.g. envFile is null
+// when an agent has no .env file, as on a fresh clone or Vercel). Cast through unknown so the build never fails on it.
+export const agentStatus = statusData as unknown as { lastRun?: string; agents?: Record<string, AgentStatus> };
 
 export const fmtDate = (iso?: string) =>
   iso ? new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles", timeZoneName: "short" }) : "not yet";
