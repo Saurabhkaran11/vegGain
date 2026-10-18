@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { DESIGN_STYLES, type DesignStyle } from "@/lib/meals";
+import { DESIGN_STYLES, type DesignStyle } from "@/lib/meal-meta";
 import { PAGES } from "@/lib/site";
 import { usePlanner } from "./PlannerProvider";
 

@@ -3,9 +3,9 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { SLOTS, type Slot } from "@/lib/meals";
+import { SLOTS, type Slot } from "@/lib/meal-meta";
 import { TOPICS, TOPIC_LABEL, ageHours, recipeTopics, videoTopics, viewCount, type TopicId } from "@/lib/chef-topics";
-import { photoSrc } from "@/lib/photos";
+import { thumbSrc } from "@/lib/photo-src";
 import { ChefAvatar } from "./ChefAvatar";
 import { read, write } from "./PlannerProvider";
 
@@ -270,7 +270,7 @@ export function ChefBoard({ chefs, recipes }: { chefs: BoardChef[]; recipes: Rec
                           return (
                             <li key={id}>
                               <Link className="cb-recipe" href={`/menu/${id}`}>
-                                <span className="cb-photo"><img src={photoSrc(id)} alt="" width={160} height={120} loading="lazy" /></span>
+                                <span className="cb-photo"><img src={thumbSrc(id)} alt="" width={160} height={120} loading="lazy" /></span>
                                 <span className="cb-txt"><b>{m.name}</b><small>{m.p} g protein · {m.kcal} kcal · {SLOTS[m.slot]}</small></span>
                               </Link>
                             </li>

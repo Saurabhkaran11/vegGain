@@ -1,6 +1,6 @@
 import Image from "next/image";
-import type { Meal } from "@/lib/meals";
-import { photoCredit, photoSrc } from "@/lib/photos";
+import type { Meal } from "@/lib/meal-meta";
+import { photoSrc } from "@/lib/photo-src";
 
 type Props = { meal: Meal; sizes?: string; eager?: boolean; className?: string };
 
@@ -21,13 +21,3 @@ export function MealPhoto({ meal, sizes = "(max-width: 640px) 100vw, (max-width:
   );
 }
 
-export function PhotoCreditLine({ id }: { id: string }) {
-  const c = photoCredit(id);
-  if (!c) return null;
-  return (
-    <p className="credit">
-      Photo: <a href={c.page} target="_blank" rel="noopener noreferrer">{c.title}</a> by {c.author} ·{" "}
-      {c.licenseUrl ? <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer">{c.license}</a> : c.license} · {c.source}
-    </p>
-  );
-}

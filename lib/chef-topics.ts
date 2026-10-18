@@ -1,6 +1,6 @@
 // Sorts chef videos and VegGain recipes into topics, so the Chefs page can show, say, every chef's
 // paneer videos side by side. Titles are matched in English and Hindi (Devanagari); one item can sit in several topics.
-import type { Slot } from "./meals";
+import type { Slot } from "./meal-meta";
 
 export const TOPICS = [
   { id: "breakfast", label: "Breakfast", re: /breakfast|nashta|nasta|\bpoha|upma|parath?a|parantha|thepla|chill?a\b|cheela|dosa|idli|uttapam|appam|pancake|toast|sandwich|\boats?\b|porridge|granola|नाश्ता|पोहा|उपमा|पराठा|चीला|डोसा|इडली/i },

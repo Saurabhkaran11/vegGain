@@ -4,9 +4,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { ChefSummary, RecipeLite } from "@/lib/chef-data";
-import { SLOTS, SLOT_ORDER } from "@/lib/meals";
+import { SLOTS, SLOT_ORDER } from "@/lib/meal-meta";
 import { TOPICS, TOPIC_LABEL, ageHours, recipeTopics, videoTopics, viewCount, type TopicId } from "@/lib/chef-topics";
-import { photoSrc } from "@/lib/photos";
+import { thumbSrc } from "@/lib/photo-src";
 import { ChefAvatar } from "./ChefAvatar";
 import { MAX_COMPARE, useCompare } from "./ChefCompareState";
 
@@ -144,7 +144,7 @@ export function ChefCompare({ chefs, recipes }: { chefs: ChefSummary[]; recipes:
                         {vids.map((v) => (
                           <li key={v.id}>
                             <a className="cb-video" href={v.url} target="_blank" rel="noopener noreferrer">
-                              <span className="cb-thumb"><img src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width={320} height={180} loading="lazy" referrerPolicy="no-referrer" /><i aria-hidden="true">▶</i></span>
+                              <span className="cb-thumb"><img src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width={320} height={180} loading="lazy" decoding="async" referrerPolicy="no-referrer" /><i aria-hidden="true">▶</i></span>
                               <span className="cb-txt"><b>{v.title}</b><small>{[v.views && `${v.views} views`, v.published].filter(Boolean).join(" · ")}</small></span>
                             </a>
                           </li>
@@ -173,7 +173,7 @@ export function ChefCompare({ chefs, recipes }: { chefs: ChefSummary[]; recipes:
                               {list.map((id) => (
                                 <li key={id}>
                                   <Link className="cb-recipe" href={`/menu/${id}`}>
-                                    <span className="cb-photo"><img src={photoSrc(id)} alt="" width={160} height={120} loading="lazy" /></span>
+                                    <span className="cb-photo"><img src={thumbSrc(id)} alt="" width={160} height={120} loading="lazy" decoding="async" /></span>
                                     <span className="cb-txt"><b>{recipes[id].name}</b><small>{recipes[id].p} g protein · {recipes[id].kcal} kcal</small></span>
                                   </Link>
                                 </li>

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { memo, useState } from "react";
-import { SLOTS, TAG_LABEL, isDiet, ytURL, type Meal, type ViewMode } from "@/lib/meals";
+import { SLOTS, TAG_LABEL, isDiet, ytURL, type Meal, type ViewMode } from "@/lib/meal-meta";
 import { usePlanner } from "./PlannerProvider";
-import { MealPhoto, PhotoCreditLine } from "./MealPhoto";
-import { kidneyAbbr, kidneyShort } from "@/lib/kidney";
+import { MealPhoto } from "./MealPhoto";
+import { LazyPhotoCredit } from "./LazyPhotoCredit";
+import { kidneyAbbr, kidneyShort } from "@/lib/kidney-core";
 
 export function money(m: Meal, currency: "USD" | "INR") {
   return currency === "USD" ? "$" + m.usd.toFixed(2) : "₹" + m.inr;
@@ -173,7 +174,7 @@ export const MealCard = memo(function MealCard({ meal, index, feature, maxProtei
             {protein}
             <Macros meal={meal} />
             <div className="price"><b>{money(meal, currency)}</b><span>per serving</span></div>
-            <div className="pop-scroll"><RecipeDetails meal={meal} /><PhotoCreditLine id={meal.id} /></div>
+            <div className="pop-scroll"><RecipeDetails meal={meal} /><LazyPhotoCredit id={meal.id} /></div>
             <MealActions meal={meal} />
           </div>
         </div>

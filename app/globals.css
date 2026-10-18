@@ -1179,3 +1179,12 @@ body:has(.cmp-tray) footer{padding-bottom:90px}
 .cmp-list .cb-recipe{grid-template-columns:72px minmax(0,1fr)}
 @media (max-width:700px){.cmp-grid{grid-template-columns:repeat(var(--n),minmax(78vw,1fr))}.cmp-list .cb-video{grid-template-columns:104px minmax(0,1fr)}}
 .cmp-head{align-self:stretch;align-content:start}
+
+/* =========================================================
+   v12: rendering performance
+   ========================================================= */
+/* Off-screen cards skip layout and paint until they scroll near the viewport. */
+.grid > .card,.cd-card,.video-card,.chef-recipes > li,.cmp-cell{content-visibility:auto;contain-intrinsic-size:auto 420px}
+.chef-recipes > li{contain-intrinsic-size:auto 120px}
+.more-cards{display:flex;justify-content:center;padding:22px 0 6px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

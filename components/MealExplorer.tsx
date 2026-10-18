@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CUISINES, DIETS, INDIAN_REGIONS, MEALS, SLOTS, SORTS, VIEWS, WORLD_CUISINES, cuisineFilterLabel, matches, searchMeals, sortMeals,
   type CuisineFilter, type Diet, type Slot, type SortKey, type ViewMode,
@@ -18,6 +18,9 @@ const VIEW_ICONS: Record<ViewMode, React.ReactNode> = {
   wide: <svg viewBox="0 0 20 20"><rect x="2" y="3" width="16" height="6" rx="1.5" /><rect x="2" y="11" width="16" height="6" rx="1.5" /></svg>,
   list: <svg viewBox="0 0 20 20"><rect x="2" y="3" width="3" height="3" rx=".8" /><rect x="7" y="3.5" width="11" height="2" rx="1" /><rect x="2" y="8.5" width="3" height="3" rx=".8" /><rect x="7" y="9" width="11" height="2" rx="1" /><rect x="2" y="14" width="3" height="3" rx=".8" /><rect x="7" y="14.5" width="11" height="2" rx="1" /></svg>,
 };
+
+// Cards are rendered in pages: the first page is in the HTML, more are added as the visitor scrolls.
+const PAGE = 24;
 
 const isSlot = (v: string): v is Slot => v in SLOTS && v !== "all";
 const isCuisineFilter = (v: string): v is CuisineFilter => v === "indian-all" || v in CUISINES;
@@ -48,6 +51,18 @@ export function MealExplorer() {
     if (savedOnly) l = l.filter((m) => favs.includes(m.id));
     return sortMeals(searchMeals(l, query), sort);
   }, [slot, diet, cuisine, savedOnly, favs, query, sort]);
+
+  const [shown, setShown] = useState(PAGE);
+  const more = useRef<HTMLDivElement>(null);
+  const listKey = `${slot}-${diet}-${cuisine}-${sort}-${savedOnly}-${query}`;
+  useEffect(() => setShown(PAGE), [listKey]);
+  useEffect(() => {
+    const el = more.current;
+    if (!el || shown >= list.length) return;
+    const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) setShown((n) => n + PAGE); }, { rootMargin: "800px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [shown, list.length]);
 
   // Bento feature tiles: the first item of each category (or the first result when one category is shown).
   const features = useMemo(() => {
@@ -127,10 +142,15 @@ export function MealExplorer() {
             <button className="btn add" onClick={reset}>Show all recipes</button>
           </div>
         )}
-        {list.map((m, i) => (
+        {list.slice(0, shown).map((m, i) => (
           <MealCard key={m.id} meal={m} index={i} feature={features[i]} maxProtein={maxProtein} view={view} />
         ))}
       </div>
+      {shown < list.length && (
+        <div ref={more} className="more-cards">
+          <button type="button" className="btn ghost" onClick={() => setShown((n) => n + PAGE)}>Show more recipes ({list.length - shown} left)</button>
+        </div>
+      )}
 
     </section>
   );

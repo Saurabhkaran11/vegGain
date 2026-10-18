@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { DESIGN_STYLES, SAMPLE_INDIAN_DAY, type CuisineFilter, type Diet, type DesignStyle, type Slot, type ViewMode } from "@/lib/meals";
+import { DESIGN_STYLES, SAMPLE_INDIAN_DAY, type CuisineFilter, type Diet, type DesignStyle, type Slot, type ViewMode } from "@/lib/meal-meta";
 import { DEFAULT_PROFILE, computeTargets, sanitize, type Profile, type Targets } from "@/lib/targets";
 
 type Currency = "USD" | "INR";

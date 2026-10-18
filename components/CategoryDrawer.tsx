@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
-import { CUISINES, DIETS, INDIAN_REGIONS, MEALS, SLOTS, SLOT_HINT, WORLD_CUISINES, matches, type CuisineFilter, type Diet, type Slot } from "@/lib/meals";
+import { CUISINES, DIETS, INDIAN_REGIONS, SLOTS, SLOT_HINT, WORLD_CUISINES, matches, type CuisineFilter, type Diet, type Meal, type Slot } from "@/lib/meal-meta";
+
+/** Just enough of each recipe to count it (passed from the server so the full recipe list is not downloaded on every page). */
+export type MealIndex = Pick<Meal, "slot" | "tags">[];
 import { PAGES } from "@/lib/site";
 import { usePlanner } from "./PlannerProvider";
 
 
 /** Left-side drawer opened from the burger icon: recipe categories, filters and pages. */
-export function CategoryDrawer() {
+export function CategoryDrawer({ index }: { index: MealIndex }) {
   const { slot, setSlot, diet, setDiet, cuisine, setCuisine, drawerOpen, setDrawerOpen } = usePlanner();
   const router = useRouter();
   const pathname = usePathname();
@@ -32,9 +35,9 @@ export function CategoryDrawer() {
 
   const counts = useMemo(() => {
     const out = {} as Record<"all" | Slot, number>;
-    (Object.keys(SLOTS) as ("all" | Slot)[]).forEach((k) => { out[k] = MEALS.filter((m) => matches(m, k, diet, cuisine)).length; });
+    (Object.keys(SLOTS) as ("all" | Slot)[]).forEach((k) => { out[k] = index.filter((m) => matches(m, k, diet, cuisine)).length; });
     return out;
-  }, [diet, cuisine]);
+  }, [index, diet, cuisine]);
 
   function goToMenu() {
     setDrawerOpen(false);

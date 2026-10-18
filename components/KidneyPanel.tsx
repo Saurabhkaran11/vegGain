@@ -1,6 +1,6 @@
 // Server component: sodium, potassium and phosphorus for a Kidney care recipe, against NKF targets.
 import Link from "next/link";
-import type { Meal } from "@/lib/meals";
+import type { Meal } from "@/lib/meal-meta";
 import { kidneyProteinNote, kidneyRows } from "@/lib/kidney";
 
 export function KidneyPanel({ meal }: { meal: Meal }) {

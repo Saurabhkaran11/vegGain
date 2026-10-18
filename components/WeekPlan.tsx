@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { CUISINES, INDIAN_REGIONS, SLOTS, WORLD_CUISINES } from "@/lib/meals";
+import { CUISINES, INDIAN_REGIONS, SLOTS, WORLD_CUISINES } from "@/lib/meal-meta";
 import {
   DAY_NAMES, DEFAULT_OPTIONS, MAIN_SLOTS, buildGrocery, dayTotals, focusNoteText, generateWeek, groceryText, isValidWeek, meal, swapMeal, targetKey,
   type Focus, type MainSlot, type PlanDay, type PlanOptions,
 } from "@/lib/weekplan";
-import { photoSrc } from "@/lib/photos";
+import { thumbSrc } from "@/lib/photo-src";
 import { read, usePlanner, write } from "./PlannerProvider";
 import { SAMPLE_KIDNEY_DAY } from "@/lib/kidney";
 import { KIDNEY_STATUS } from "@/lib/targets";
@@ -173,7 +173,7 @@ export function WeekPlan() {
                       if (!m) return null;
                       return (
                         <li key={s}>
-                          <img src={photoSrc(m.id)} alt="" width={56} height={42} loading="lazy" />
+                          <img src={thumbSrc(m.id, 128)} alt="" width={56} height={42} loading="lazy" decoding="async" />
                           <span><small>{SLOTS[s]}</small><Link href={`/menu/${m.id}`}>{m.name}</Link><em>{m.p} g · {m.kcal} kcal</em></span>
                           <button className="swap" onClick={() => swap(i, s)} aria-label={`Swap ${SLOTS[s]} on ${DAY_NAMES[i]}`} title="Swap this meal">↻</button>
                         </li>
@@ -184,7 +184,7 @@ export function WeekPlan() {
                       if (!m) return null;
                       return (
                         <li key={id} className="extra">
-                          <img src={photoSrc(m.id)} alt="" width={56} height={42} loading="lazy" />
+                          <img src={thumbSrc(m.id, 128)} alt="" width={56} height={42} loading="lazy" decoding="async" />
                           <span><small>Protein boost</small><Link href={`/menu/${m.id}`}>{m.name}</Link><em>{m.p} g · {m.kcal} kcal</em></span>
                         </li>
                       );

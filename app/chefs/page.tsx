@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preconnect } from "react-dom";
 import { chefsUpdatedAt, fmtDate } from "@/lib/data";
 import { chefSummaries } from "@/lib/chef-data";
 import { PageHead } from "@/components/PageHead";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function ChefsPage() {
+  preconnect("https://i.ytimg.com"); // video thumbnails
   const { chefs } = chefSummaries();
   const videos = chefs.reduce((a, c) => a + c.videos.length, 0);
   return (

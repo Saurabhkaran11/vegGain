@@ -49,7 +49,7 @@ export function ChefDirectory({ chefs }: { chefs: ChefSummary[] }) {
                   </Link>
                   <p className="cd-bio">{c.bio}</p>
                   <Link href={`/chefs/${c.id}`} className="cd-thumbs" aria-label={`${c.name}: latest videos`} tabIndex={-1}>
-                    {c.videos.slice(0, 3).map((v) => <img key={v.id} src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width={320} height={180} loading="lazy" referrerPolicy="no-referrer" />)}
+                    {c.videos.slice(0, 3).map((v) => <img key={v.id} src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" width={320} height={180} loading="lazy" decoding="async" referrerPolicy="no-referrer" />)}
                     {c.videos.length === 0 && <span className="cd-novid">No new videos in the latest fetch</span>}
                   </Link>
                   <div className="cd-counts"><span><b>{c.videos.length}</b> videos</span><span><b>{c.recipes.length}</b> recipes</span></div>

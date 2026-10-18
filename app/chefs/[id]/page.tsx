@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preconnect } from "react-dom";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CHEFS, chefById, chefFeed, chefsUpdatedAt, channelUrl, fmtDate, recipesForChef, searchChefVideo } from "@/lib/data";
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: PageProps<"/chefs/[id]">): Pr
 }
 
 export default async function ChefPage({ params }: PageProps<"/chefs/[id]">) {
+  preconnect("https://i.ytimg.com"); // video thumbnails
   const { id } = await params;
   const c = chefById(id);
   if (!c) notFound();

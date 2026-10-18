@@ -5,6 +5,10 @@ import { Header } from "@/components/Header";
 import { CategoryDrawer } from "@/components/CategoryDrawer";
 import { Footer } from "@/components/Footer";
 import { SITE_URL } from "@/lib/site";
+import { MEALS } from "@/lib/meals";
+
+// Slot and tags only: the drawer counts recipes without shipping the whole recipe list to every page.
+const MEAL_INDEX = MEALS.map((m) => ({ slot: m.slot, tags: m.tags }));
 import "./globals.css";
 
 // next/font self-hosts the fonts at build time: no layout shift and no browser requests to Google.
@@ -31,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="art" aria-hidden="true"><i /><i /><i /></div>
           <a className="skip" href="#main">Skip to content</a>
           <Header />
-          <CategoryDrawer />
+          <CategoryDrawer index={MEAL_INDEX} />
           <main id="main" className="wrap">{children}</main>
           <Footer />
         </PlannerProvider>

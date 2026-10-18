@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preconnect } from "react-dom";
 import Link from "next/link";
 import { chefSummaries } from "@/lib/chef-data";
 import { ChefCompare } from "@/components/ChefCompare";
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function ComparePage() {
+  preconnect("https://i.ytimg.com"); // video thumbnails
   const { chefs, recipes } = chefSummaries();
   return (
     <>
