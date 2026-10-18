@@ -1,12 +1,12 @@
-import { CuisineBrowser, ExploreTiles, Hero, HowItWorks, SampleDayPreview } from "@/components/content/Home";
+import { Billboard, BrowseRows } from "@/components/content/Browse";
+import { ExploreTiles, HowItWorks } from "@/components/content/Home";
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <CuisineBrowser />
+      <Billboard />
+      <BrowseRows />
       <HowItWorks />
-      <SampleDayPreview />
       <ExploreTiles />
     </>
   );
