@@ -1,13 +1,11 @@
 // Netflix-style home: a featured "billboard" dish, personal rows, then sliding rows by meal, goal and cuisine.
-import Image from "next/image";
 import Link from "next/link";
 import { CUISINES, MEALS, SLOTS, cuisineOf, isIndian, type Meal } from "@/lib/meals";
-import { photoSrc } from "@/lib/photo-src";
 import { chefSummaries } from "@/lib/chef-data";
 import { Rail } from "@/components/Rail";
 import { NfCard, type CardMeal } from "@/components/NfCard";
 import { ForYou } from "@/components/ForYou";
-import { AddDayButton } from "@/components/AddDayButton";
+import { HeroCarousel, type Slide } from "@/components/HeroCarousel";
 import { ChefAvatar } from "@/components/ChefAvatar";
 
 const minutes = (t: string) => parseInt(t, 10) || 99;
@@ -16,35 +14,26 @@ const card = (m: Meal): CardMeal => ({ id: m.id, name: m.name, p: m.p, kcal: m.k
 const byProtein = (a: Meal, b: Meal) => b.p - a.p;
 const MAINS = MEALS.filter((m) => ["breakfast", "lunch", "evening", "dinner"].includes(m.slot));
 
-// The featured dish changes every day (picked when the site is built) from the most protein-rich mains.
-function featured() {
-  const pool = [...MAINS].sort(byProtein).slice(0, 24);
-  return pool[Math.floor(Date.now() / 864e5) % pool.length];
+// Featured dishes for the sliding hero: the most protein-rich mains, starting from a different one each day.
+function featured(count = 6) {
+  const pool = [...MAINS].sort(byProtein).slice(0, 30);
+  const start = Math.floor(Date.now() / 864e5) % pool.length;
+  // Spread picks across the pool so the slides differ (meal type and cuisine).
+  const out: Meal[] = [];
+  for (let k = 0; out.length < count && k < pool.length; k++) {
+    const m = pool[(start + k * 5) % pool.length];
+    if (!out.some((o) => o.id === m.id || (o.slot === m.slot && cuisineOf(o) === cuisineOf(m)))) out.push(m);
+  }
+  return out;
 }
 
 export function Billboard() {
-  const m = featured();
-  return (
-    <section className="billboard" aria-labelledby="bb-title">
-      <Image src={photoSrc(m.id)} alt="" fill priority sizes="(max-width: 1240px) 100vw, 1240px" className="bb-img" />
-      <div className="bb-shade" />
-      <div className="bb-body">
-        <p className="bb-kicker">Today’s pick · {SLOTS[m.slot]} · {CUISINES[cuisineOf(m)]}</p>
-        <h1 id="bb-title">{m.name}</h1>
-        <p className="bb-facts">
-          <span className="bb-match">{m.p} g protein</span>
-          <span>{m.kcal} kcal</span><span>{m.time.replace(/\s*\(.*\)/, "")}</span><span>${m.usd.toFixed(2)}</span>
-          {m.tags.includes("vegan") && <span className="bb-pill">Vegan</span>}
-        </p>
-        <p className="bb-desc">{m.vit}</p>
-        <div className="bb-actions">
-          <Link className="btn bb-play" href={`/menu/${m.id}`}>▶ Cook it</Link>
-          <AddDayButton id={m.id} className="btn bb-ghost" />
-          <Link className="btn bb-ghost" href="/plan#targets">My targets &amp; 7-day plan</Link>
-        </div>
-      </div>
-    </section>
-  );
+  const slides: Slide[] = featured().map((m, k) => ({
+    id: m.id, name: m.name, p: m.p, kcal: m.kcal, usd: m.usd, vegan: m.tags.includes("vegan"),
+    time: m.time.replace(/\s*\(.*\)/, ""), desc: m.vit,
+    kicker: `${k === 0 ? "Today’s pick" : "Featured"} · ${SLOTS[m.slot]} · ${CUISINES[cuisineOf(m)]}`,
+  }));
+  return <HeroCarousel slides={slides} />;
 }
 
 type Row = { id: string; title: string; sub?: string; href: string; list: Meal[]; top?: boolean };
