@@ -1,5 +1,5 @@
 // Weekly meal plan generator and grocery list builder (pure functions, no React).
-import { MEALS, INDIAN_REGIONS, CUISINES, SLOTS, isIndian, cuisineOf, type Meal, type Diet, type Cuisine } from "./meals";
+import { MEALS, INDIAN_REGIONS, CUISINES, PRIORITY_CUISINE, SLOTS, isIndian, cuisineOf, type Meal, type Diet, type Cuisine } from "./meals";
 import type { Targets } from "./targets";
 
 export type Focus = "mix" | "indian" | "world" | Cuisine;
@@ -104,7 +104,9 @@ function sample(list: Meal[], s: MainSlot, o: PlanOptions, t: Targets, r: () => 
   const w = list.map((m) => {
     const value = o.budget ? (m.p / Math.max(0.5, m.usd)) ** 1.2 : m.p ** 1.2;
     const fit = Math.exp(-(((m.kcal - budget) / (budget * 0.5)) ** 2));
-    return value * (0.3 + fit) * (soft.has(m.id) ? 0.35 : 1) / (1 + (seen.get(m.id) ?? 0));
+    // The priority cuisine (Rajasthani) is picked more often whenever it is allowed by the chosen focus.
+    const pri = cuisineOf(m) === PRIORITY_CUISINE ? 2.5 : 1;
+    return value * pri * (0.3 + fit) * (soft.has(m.id) ? 0.35 : 1) / (1 + (seen.get(m.id) ?? 0));
   });
   let x = r() * w.reduce((a, b) => a + b, 0);
   for (let i = 0; i < list.length; i++) { x -= w[i]; if (x <= 0) return list[i]; }

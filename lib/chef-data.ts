@@ -1,6 +1,6 @@
 // Server-side shaping of chef data for the Chefs directory and the Compare page (plain, serialisable props).
 import { CHEFS, chefFeed, channelUrl, recipesForChef } from "./data";
-import { CUISINES, MEALS, type Slot } from "./meals";
+import { CUISINES, MEALS, PRIORITY_CUISINE, type Slot } from "./meals";
 
 export type ChefVideo = { id: string; title: string; url: string; views: string; published: string };
 export type ChefSummary = {
@@ -12,7 +12,9 @@ export type RecipeLite = { name: string; slot: Slot; p: number; kcal: number };
 const GROUP_LABEL = { indian: "Indian", world: "World", vegan: "Plant-based fitness" } as const;
 
 export function chefSummaries(): { chefs: ChefSummary[]; recipes: Record<string, RecipeLite> } {
-  const chefs: ChefSummary[] = CHEFS.map((c) => {
+  // Chefs who cook Rajasthani food are listed first.
+  const ordered = [...CHEFS].sort((a, b) => Number(b.cuisines.includes(PRIORITY_CUISINE)) - Number(a.cuisines.includes(PRIORITY_CUISINE)));
+  const chefs: ChefSummary[] = ordered.map((c) => {
     const feed = chefFeed(c.id);
     const cuisines = c.cuisines.includes("global") ? "Vegan & fitness" : c.cuisines.slice(0, 3).map((k) => CUISINES[k as keyof typeof CUISINES]).join(" · ");
     return {

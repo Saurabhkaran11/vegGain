@@ -2,10 +2,13 @@
 // on every page, so the full recipe list (ingredients and steps) only downloads where it is used.
 export type Slot = "breakfast" | "lunch" | "evening" | "dinner" | "drinks" | "fruit" | "skin" | "kidney" | "pantry";
 export type Diet = "veg" | "vegan";
-export const INDIAN_REGIONS = ["punjabi", "gujarati", "marathi", "rajasthani", "southindian", "bihari", "indian"] as const;
+export const INDIAN_REGIONS = ["rajasthani", "punjabi", "gujarati", "marathi", "southindian", "bihari", "indian"] as const;
 export const WORLD_CUISINES = ["korean", "chinese", "japanese", "thai", "mexican", "mediterranean", "italian"] as const;
 export type IndianRegion = (typeof INDIAN_REGIONS)[number];
 export type Cuisine = IndianRegion | (typeof WORLD_CUISINES)[number];
+
+/** The site always puts this cuisine first: menu order, home rows, the featured hero and the 7-day plan. */
+export const PRIORITY_CUISINE = "rajasthani" as const;
 export type Tag = Diet | Cuisine;
 /** Cuisine filter value: a single cuisine, every Indian region, recipes with no cuisine tag, or everything. */
 export type CuisineFilter = "all" | "indian-all" | Cuisine | "global";
