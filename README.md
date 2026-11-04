@@ -6,7 +6,7 @@ High-protein vegetarian and vegan meal plan (Indian, Korean, Chinese, Japanese, 
 | Route | What it has |
 |---|---|
 | `/` | Targets, how it works, sample day, links to every section |
-| `/menu` | 79 recipes: meals, drinks, fruit bowls and skin-glow picks; search, sort, diet/cuisine filters, saved list, 4 layouts |
+| `/menu` | 255 recipes: meals, drinks, fruit bowls and skin-glow picks; search, sort, diet/cuisine filters, saved list, 4 layouts |
 | `/menu/[id]` | Shareable page for every recipe (prerendered), with photo credit and related dishes |
 | `/plan` | Day builder and the 8-week progression |
 | `/health` | Brain-focus and skin nutrients, what food can and cannot do |
@@ -42,7 +42,7 @@ Four agents in `agents/` run automatically before every build, so the site alway
 | `currency` | Today's USD → INR/EUR/GBP rates | ExchangeRate-API open endpoint | `agents/currency/.env` | `data/currency.json` |
 | `photos` | Re-verifies every photo credit; finds, crops and credits photos for new recipes | Wikimedia Commons API + sharp | `agents/photos/.env` | `public/meals/*.webp`, `lib/photo-credits.json` |
 
-- Each agent folder has `agent.mjs`, `.env` (your settings, git-ignored), `.env.example`, and `resources.json` (the sources it uses).
+- Each agent folder has `agent.mjs` and `resources.json` (the sources it uses). You can add a `.env` there for your own settings. It is git-ignored and the defaults work without it.
 - `npm run agents` refreshes (respecting each agent's `*_TTL_HOURS`); `npm run agents:force` refreshes everything.
 - A failing agent never stops the app; it keeps its last good data. Status and resources are shown at `/agents`.
 - Optional keys: `CHEFS_YOUTUBE_API_KEY` (https://console.cloud.google.com), `NUTRITION_USDA_API_KEY` (https://fdc.nal.usda.gov/api-key-signup).
@@ -51,13 +51,13 @@ Four agents in `agents/` run automatically before every build, so the site alway
 ```bash
 cd veggain8
 npm install
-npm run dev          # http://localhost:3000
+npm run dev          # http://localhost:3456
 ```
 
 Production build:
 ```bash
 npm run build
-npm start            # http://localhost:3000
+npm start            # http://localhost:3456
 ```
 
 ## Project structure
@@ -86,6 +86,8 @@ components/SeasonalFruit    fruit calendar that highlights the current season
 3. Only use photos you own or that are licensed for commercial reuse with attribution.
 
 ## Deploy
+**Settings:** set `NEXT_PUBLIC_SITE_URL` to your real domain, because the sitemap and social tags use it. No database or visitor keys are needed. The agents run during the build and keep their last good data if a source fails or times out.
+
 **Free (Vercel Hobby, personal/non-commercial):**
 1. Push this folder to a GitHub repo.
 2. Go to https://vercel.com/new, import the repo; Next.js is detected automatically.

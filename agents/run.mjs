@@ -12,7 +12,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadAgentEnv, num } from "./_lib/env.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -41,7 +41,7 @@ async function runAgent(name, status) {
   }
   const started = Date.now();
   try {
-    const mod = await import(path.join(dir, "agent.mjs"));
+    const mod = await import(pathToFileURL(path.join(dir, "agent.mjs")).href);
     const previous = await readJSON(outFile, null);
     let timer;
     const result = await Promise.race([
